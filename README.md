@@ -131,25 +131,25 @@ graph TD
 sequenceDiagram
     autonumber
     actor C as Comprador
-    participant G as Gateway de Pagamento (Asaas/Pagar.me)
+    participant G as Gateway de Pagamento
     participant E as Escrow Engine (VoaPonto)
     actor V as Vendedor
-    participant B as Conta Bancária do Vendedor
+    participant B as Conta Bancaria do Vendedor
 
-    C->>G: Efetua pagamento via PIX Dinâmico (R$ 1.000)
-    G-->>E: Webhook: PIX Liquidado com Sucesso
-    E->>E: Aloca fundos na Subconta de Custódia Segura
-    E->>V: Notifica garantia financeira; autoriza emissão
-    Note over E,V: Vendedor emite o bilhete e envia PNR validado
-    Note over C,V: Monitoramento contínuo até a data do embarque
-    alt Embarque Concluído com Sucesso (D+1)
-        E->>G: Executa Split de Pagamento
-        G->>B: Repasse líquido ao Vendedor (R$ 880)
+    C->>G: Efetua pagamento via PIX Dinamico (R$ 1.000)
+    G->>E: Webhook com confirmacao de PIX liquidado
+    E->>E: Aloca fundos na subconta de custodia
+    E->>V: Notifica garantia financeira e autoriza emissao
+    Note over E,V: Vendedor emite bilhete e envia PNR validado
+    Note over C,V: Monitoramento continuo ate a data do embarque
+    alt Embarque Concluido com Sucesso
+        E->>G: Executa split de pagamento
+        G->>B: Repasse liquido ao Vendedor (R$ 880)
         G->>E: Taxa da Plataforma (R$ 120 / Take Rate)
     else Vendedor Cancelou Unilateralmente ou Fraude
-        E->>G: Estorno Integral Automático via PIX
+        E->>G: Estorno integral automatico via PIX
         G->>C: R$ 1.000 devolvidos na conta de origem
-        E->>G: Dispara cobrança de penalidade no Cartão Caução do Vendedor
+        E->>G: Dispara cobranca de penalidade no cartao caucao
     end
 ```
 
